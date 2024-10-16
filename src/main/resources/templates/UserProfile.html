@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bus Reservation Profile</title>
+    <link rel="stylesheet" href="styles.css"> 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+
+        .profile-container {
+            max-width: 800px;
+            margin: auto;
+            padding: 30px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .profile-header i {
+            font-size: 120px;
+            color: #007bff;
+            margin-right: 20px;
+        }
+
+        .profile-header h1 {
+            margin: 0;
+            color: #007bff;
+            font-size: 28px;
+        }
+
+        .profile-details,
+        .reservation-details {
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            background: #fafafa;
+        }
+
+        .profile-details label,
+        .reservation-details label {
+            font-weight: bold;
+            display: inline-block;
+            width: 150px;
+            color: #333;
+        }
+
+        .profile-details span,
+        .reservation-details span {
+            color: #555;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 10px;
+            transition: background-color 0.3s;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        h2 {
+            color: #333;
+            margin-top: 30px;
+            margin-bottom: 10px;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: flex-start;
+            flex-wrap: wrap;
+        }
+
+        .logout-button {
+            background-color: #dc3545;
+        }
+
+        .logout-button:hover {
+            background-color: #c82333;
+        }
+
+        /* Reservation styles */
+        .reservation {
+            margin-bottom: 20px; 
+            padding: 15px;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            background: #fafafa;
+            transition: background-color 0.3s, box-shadow 0.3s;
+        }
+
+        .reservation:hover {
+            background-color: #f0f8ff; 
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+        }
+
+        .reservation p {
+            margin: 10px 0; 
+        }
+
+        .reservation label {
+            font-weight: bold;
+            color: #333;
+            margin-right: 10px;
+        }
+
+        .reservation span {
+            color: #555;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 600px) {
+            .profile-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .profile-header h1 {
+                font-size: 24px;
+            }
+
+            button {
+                width: 100%;
+                margin: 5px 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="profile-container">
+        <div class="profile-header">
+            <i class="fas fa-user-circle" aria-hidden="true"></i>
+            <h1 th:text="${user.userName}">User Name</h1>
+        </div>
+
+        <div class="profile-details">
+            <p><label>Email:</label> <span th:text="${user.email}">Email</span></p>
+            <p><label>Phone:</label> <span th:text="${user.phone}">Phone</span></p>
+            <p><label>Location:</label> <span th:text="${user.location}">Location</span></p>
+        </div>
+
+        <h2>Reservation Details</h2>
+        <div class="reservation-details">
+            <th:block th:each="reservation : ${reservations}">
+                <th:block th:each="bus : ${buses}" th:if="${bus.busNumber == reservation.busNumber}">
+                    <div class="reservation">
+                        <p><label>Bus Number:</label> <span th:text="${bus.busNumber}"></span></p>
+                        <p><label>Departure:</label> <span th:text="${bus.departure}"></span></p>
+                        <p><label>From:</label> <span th:text="${bus.fromLocation}"></span></p>
+                        <p><label>To:</label> <span th:text="${bus.toLocation}"></span></p>
+                        <p><label>Seats:</label> <span th:text="${reservation.no_seats}"></span></p>
+                    </div>
+                </th:block>
+            </th:block>
+        </div>
+
+        <div class="button-container">
+            <a th:href="@{/user/edit/{id}(id=${user.id})}"><button>Edit Profile</button></a>
+            <a th:href="@{/}"><button>Make a New Reservation</button></a>
+            <a th:href="@{/user/logout}"><button class="logout-button">Logout</button></a>
+        </div>
+    </div>
+
+</body>
+
+</html>

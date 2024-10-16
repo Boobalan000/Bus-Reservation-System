@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bus Booking</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f9f9f9;
+            padding: 0px;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #333;
+        }
+        .booking-form {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        .form-label {
+            font-weight: bold;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+        button:hover {
+            background-color: #0056b3;
+            transform: scale(1.05);
+        }
+        nav {
+            background-color: #333; /* Navbar color */
+        }
+        .navbar-brand {
+            color: white !important;
+        }
+        .nav-link {
+            color: white !important;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <nav class="navbar navbar-expand-sm">
+        <div class="container">
+            <a class="navbar-brand" href="#"><i class="fa fa-bus" aria-hidden="true" style="color:yellow; margin-right:10px"></i> Bus Reservation</a>
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/}"><i class="fa fa-home"></i> Home</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<div class="container mt-5 booking-form">
+    <h1>Book Your Bus</h1>
+    <form th:action="@{/user/bus/book/}" th:object="${reserve}" method="post">
+		<div class="mb-3">
+			<label class="form-label">Bus Number</label>
+			<select id="doctor" class="form-control form-select" name="doctor" th:field="*{busNumber}" required>
+			    <option value="" disabled selected>Select Doctor</option>
+			    <option th:each="bus: ${buses}" th:value="${bus.busNumber}" th:text="${bus.busNumber}"></option>
+			</select>
+		</div>
+	<div class="mb-3">
+            <label for="fullName" class="form-label">Full Name</label>
+            <input type="text" id="fullName" name="fullName" th:field="*{name}" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" id="email" name="email" th:field="*{email}" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label for="phone" class="form-label">Phone Number</label>
+            <input type="tel" id="phone" name="phone" th:field="*{phone}" class="form-control" pattern="\d{10}" required>
+        </div>
+        <div class="mb-3">
+            <label for="seats" class="form-label">Number of Seats</label>
+            <input type="number" id="seats" name="seats" th:field="*{no_seats}" class="form-control" min="1" required>
+        </div>
+		<div class="mb-3">
+									<label for="appointmentId">Appointment ID</label>
+									<input type="text" class="form-control" id="appointmentId" th:field="*{bookingId}"
+										readonly>
+								</div>
+        <button type="submit">Confirm Booking</button>
+    </form>
+</div>
+<script th:inline="javascript">
+
+	function generateAppointmentId() {
+		const randomId = 'APT-' + Math.floor(Math.random() * 10000); // Simple random ID
+		document.getElementById('appointmentId').value = randomId;
+	}
+	window.onload = generateAppointmentId;
+	</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
